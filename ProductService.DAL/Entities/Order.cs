@@ -2,11 +2,11 @@
 
 namespace ProductService.DAL.Entities
 {
-    public class Order
+    internal class Order
     {
         public int OrderId { get; set; }
 
-        public int RowVersion { get; set; }
+        public int? RowVersion { get; set; }
 
         public DateTime? CreatedOn { get; set; }
 

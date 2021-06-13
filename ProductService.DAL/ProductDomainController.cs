@@ -1,62 +1,78 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using ProductService.DAL.Entities;
-using System;
-using System.Linq;
+using ProductService.DAL.EntityDto;
+using ProductService.DAL.Mappers;
 using System.Collections.Generic;
-using System.Text;
-using ProductService.DAL.Dto;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace ProductService.DAL
 {
     public class ProductDomainController : IProductDomainController
     {
+        #region Fields
+
         private DbContext.ProductDomainDbContext _dbContext;
 
         private IConfigurationRoot _configuration;
 
+        #endregion
+
+        #region Properties 
+
+        public IMapper Mapper { get; private set; }
+
+        #endregion
+
+        #region Constructor
+
         public ProductDomainController(IProductDomainConfiguration configuration)
         {
-            InitializeDbContext(configuration.ConnectionString);
+            Initialize(configuration.ConnectionString);
         }
 
-        public Product GetProduct(int productId)
+        #endregion
+
+        #region Public 
+
+        public ProductDto GetProduct(int productId)
         {
-            return _dbContext.Products
-                .Where(x => x.ProductId == productId).SingleOrDefault();
+            var productEntity = _dbContext.Products.Where(x => x.ProductId == productId).SingleOrDefault();
+
+            return Mapper.Map<Product, ProductDto>(productEntity);
         }
 
-        public IList<Product> GetProductsByCategory(int category)
+        public IList<ProductDto> GetProductsByCategory(int categoryId)
         {
-            var order = new Order()
-            {
-                Description = "Sample Order"
-            };
+            var products = _dbContext.Products.Where(x => x.Category.CategoryId == categoryId).ToList();
 
-            _dbContext.Orders.Add(order);
-            var id = _dbContext.SaveChanges();
-
-             order = _dbContext.Orders.Where(o => o.OrderId == 1).SingleOrDefault();
-            order.Description = "Sample order2";
-
-            var id2 = _dbContext.SaveChanges();
-
-            return _dbContext.Products.Where(x => x.Category.CategoryId == category).ToList();
+            return Mapper.Map<IList<Product>, IList<ProductDto>>(products);
         }
 
-        public IList<ProductSummary> GetProducts()
+        public IList<ProductDto> GetProducts()
         {
-            return _dbContext.Products.Select(x => new ProductSummary()
-            {
-                Id = x.ProductId,
-                Name = x.ProductName
-            }).ToList();
+            return Mapper.Map<IList<Product>, IList<ProductDto>>(_dbContext.Products.ToList());
+        }
+        #endregion
+
+        #region Privates
+
+        private void Initialize(string connStr)
+        {
+            InitializeDbContext(connStr);
+            InitializeMapper();
         }
 
         private void InitializeDbContext(string connStr)
         {
             _dbContext = new DbContext.ProductDomainDbContext(connStr);
-
         }
+
+        private void InitializeMapper()
+        {
+            this.Mapper = ProductMapper.GetMapper();
+        }
+
+        #endregion
     }
 }

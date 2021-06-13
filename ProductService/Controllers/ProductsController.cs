@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace ProductService.Controllers
 {
+    [Route("[Controller]")]
+    [ApiController]
     public class ProductsController : Controller
     {
         private IProductDomainController _productDomainController;

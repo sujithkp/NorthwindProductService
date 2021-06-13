@@ -44,7 +44,8 @@ namespace ProductService.DAL.DbContext
 
             modelBuilder.Entity<Order>().ToTable("Orders")
                 .Property(o => o.RowVersion)
-                .IsRowVersion();
+                .IsRowVersion()
+                .HasDefaultValue(0);
 
             modelBuilder.Entity<Order>().ToTable("Orders")
                 .Property(o => o.CreatedOn)

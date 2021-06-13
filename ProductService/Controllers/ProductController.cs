@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductService.DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ProductService.DAL.EntityDto;
 
 namespace ProductService.Controllers
 {
-    public class ProductController : Controller
+    [Route("[Controller]")]
+    [ApiController]
+    public class ProductController : ControllerBase
     {
         private IProductDomainController _productDomainController;
 
@@ -16,11 +15,14 @@ namespace ProductService.Controllers
             _productDomainController = domainController;
         }
 
-        public IActionResult Index(int id)
+        [HttpGet("{id?}")]
+        public ProductDto Get(int? id)
         {
-            var products = _productDomainController.GetProduct(id);
+            var products = _productDomainController.GetProduct(id.Value);
 
-            return Json(products);
+            return products;
         }
+
+       
     }
 }
