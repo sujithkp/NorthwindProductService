@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductService.DAL;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ProductService
 {
@@ -37,6 +38,8 @@ namespace ProductService
             services.AddScoped<IProductDomainConfiguration>(serviceprovider => productConfiguration);
 
             services.AddControllers();
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +49,13 @@ namespace ProductService
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("./swagger/v1/swagger.json", "ProductService");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 

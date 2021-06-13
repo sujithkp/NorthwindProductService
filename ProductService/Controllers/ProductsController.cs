@@ -18,7 +18,8 @@ namespace ProductService.Controllers
             _productDomainController = domainController;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Get()
         {
             var products = _productDomainController.GetProducts();
 
