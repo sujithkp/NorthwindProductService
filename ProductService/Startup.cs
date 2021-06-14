@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductService.DAL;
-using Swashbuckle.AspNetCore.Swagger;
+using ProductService.Handlers;
 
 namespace ProductService
 {
@@ -37,8 +33,10 @@ namespace ProductService
 
             services.AddScoped<IProductDomainConfiguration>(serviceprovider => productConfiguration);
 
-            services.AddControllers();
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
+            services.AddControllers();
             services.AddSwaggerGen();
         }
 
@@ -58,6 +56,9 @@ namespace ProductService
             });
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
