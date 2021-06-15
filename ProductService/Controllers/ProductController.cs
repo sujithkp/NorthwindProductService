@@ -20,11 +20,7 @@ namespace ProductService.Controllers
         [HttpGet("{id?}")]
         public ProductDto Get(int? id)
         {
-            var products = _productDomainController.GetProduct(id.Value);
-
-            return products;
+            return _productDomainController.GetProduct(id.Value);
         }
-
-       
     }
 }

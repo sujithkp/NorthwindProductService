@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductService.DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProductService.Controllers
 {
@@ -23,9 +19,7 @@ namespace ProductService.Controllers
         [Authorize]
         public IActionResult Get()
         {
-            var products = _productDomainController.GetProducts();
-
-            return Json(products);
+            return Json(_productDomainController.GetProducts());
         }
     }
 }
