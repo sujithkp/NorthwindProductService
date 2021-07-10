@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 
 namespace ProductService.DAL
@@ -8,7 +9,11 @@ namespace ProductService.DAL
         static void Main(string[] args)
         {
             var pdc = new ProductDomainController(new ProductDomainConfiguration()
-            { ConnectionString = "Data Source=C:\\Sqlite\\Products.db;" });
+            {
+                ConnectionString = Environment.CurrentDirectory
+                    + Path.DirectorySeparatorChar + "Data"
+                    + Path.DirectorySeparatorChar + "Products.db"
+            });
 
             var product = pdc.GetProductsByCategory(1);
         }
