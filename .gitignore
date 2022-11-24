@@ -3,3 +3,7 @@
 ################################################################################
 
 /NorthwindProductService/obj
+/.vs
+/src/NorthwindProductSvice/.vs
+/src/NorthwindProductSvice/NorthwindProductService/bin/Debug/net6.0
+/src/NorthwindProductSvice/NorthwindProductService/obj
