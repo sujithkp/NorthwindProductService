@@ -20,6 +20,7 @@ namespace NorthwindProductService.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var products = _context.Products
@@ -32,6 +33,7 @@ namespace NorthwindProductService.Controllers
             return Ok(productInfos);
         }
 
+        [HttpGet]
         [Route("{productId}/Orders")]
         public IActionResult Orders( int productId)
         {

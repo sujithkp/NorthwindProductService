@@ -14,6 +14,7 @@ namespace NorthwindProductService.Controllers
             _context = dbContext;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             var order = _context.Orders.FirstOrDefault();
@@ -21,6 +22,7 @@ namespace NorthwindProductService.Controllers
             return Ok(order);
         }
 
+        [HttpGet]
         [Route("{id}")]
         public IActionResult Index(int id)
         {
