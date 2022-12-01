@@ -17,6 +17,8 @@ namespace NorthwindProductService.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            throw new NotImplementedException();
+
             var order = _context.Orders.FirstOrDefault();
 
             return Ok(order);
